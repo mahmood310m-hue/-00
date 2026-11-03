@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --bg-color: #F8F6F0; /* خلفية أوف وايت هادئة مستوحاة من الصورة */
+            --bg-color: #F8F6F0;
             --card-bg: #FFFFFF;
             --primary-sage: #6B8E7B;
             --sage-light: #E8F0EC;
@@ -42,7 +42,7 @@
             flex-direction: row;
         }
 
-        /* نافذة اختيار المرحلة والشعبة (تظهر أول مرة) */
+        /* نافذة اختيار المرحلة والشعبة */
         #setup-modal {
             position: fixed;
             top: 0;
@@ -412,7 +412,7 @@
 </head>
 <body>
 
-    <!-- نافذة اختيار المرحلة والشعبة للطالب عند أول زيارة -->
+    <!-- نافذة اختيار المرحلة والشعبة -->
     <div id="setup-modal">
         <div class="setup-box">
             <h2>اختر مرحلتك وشعبتك الدراسية</h2>
@@ -617,9 +617,9 @@
     </main>
 
     <script>
-        // إعدادات قاعدة بيانات Supabase (استبدل القيم أدناه بمعلومات مشروعك الخاصة)
-        const SUPABASE_URL = 'https://YOUR-PROJECT-ID.supabase.co';
-        const SUPABASE_KEY = 'YOUR-ANON-KEY';
+        // إعدادات قاعدة بيانات Supabase
+        const SUPABASE_URL = 'https://snpmuvcgsgpbsyutcqkm.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNucG11dmNnc2dwYnN5dXRjcWttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM3MjA1MzMsImV4cCI6MjEwOTI5NjUzM30.U3gDu6sihIzUFB5x-42PzMdDEa8Vr3FkmvYRBZmEMOI';
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_PIN = "55443322mm";
