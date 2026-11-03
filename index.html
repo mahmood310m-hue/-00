@@ -665,4 +665,105 @@
                 .from('homeworks')
                 .select('*')
                 .eq('stage', studentStage)
-                .eq('section
+                .eq('section', studentSection)
+                .order('id', { ascending: false });
+
+            if (error) {
+                console.error('خطأ في جلب البيانات:', error);
+                return;
+            }
+
+            renderHomeworkTable(data || []);
+        }
+
+        function renderHomeworkTable(list) {
+            const tbody = document.getElementById('homework-table-body');
+            document.getElementById('homework-count').innerText = list.length;
+            
+            tbody.innerHTML = '';
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">لا توجد واجبات دراسية مسجلة لهذا الصف حالياً.</td></tr>`;
+                return;
+            }
+
+            list.forEach(item => {
+                const tr = document.createElement('tr');
+                const badgeClass = item.status === 'success' ? 'success' : 'pending';
+                const badgeText = item.status === 'success' ? 'تم التسليم' : 'قيد الإنجاز';
+
+                tr.innerHTML = `
+                    <td>${item.subject}</td>
+                    <td>${item.details}</td>
+                    <td>${item.due}</td>
+                    <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+                    ${isAdminLoggedIn ? `<td><button class="btn-delete" onclick="deleteHomework(${item.id})"><i class="fa-solid fa-trash"></i></button></td>` : ''}
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function switchView(viewId, element) {
+            document.querySelectorAll('.view-section').forEach(section => section.classList.remove('active'));
+            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+
+            document.getElementById(viewId).classList.add('active');
+            if (element) element.parentElement.classList.add('active');
+        }
+
+        function openAdminPanel(element) {
+            if (!isAdminLoggedIn) {
+                const pin = prompt("أدخل الرمز السري للدخول إلى لوحة الإدارة:");
+                if (pin === ADMIN_PIN) {
+                    isAdminLoggedIn = true;
+                    alert("تم تسجيل الدخول بنجاح كمدير!");
+                    document.querySelectorAll('.admin-only-col').forEach(el => el.style.display = 'table-cell');
+                    fetchHomeworks();
+                    switchView('admin-panel', element);
+                } else if (pin !== null) {
+                    alert("الرمز السري غير صحيح!");
+                }
+            } else {
+                switchView('admin-panel', element);
+            }
+        }
+
+        // إضافة واجب جديد إلى Supabase
+        document.getElementById('add-homework-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const newHomework = {
+                stage: document.getElementById('admin-target-stage').value,
+                section: document.getElementById('admin-target-section').value,
+                subject: document.getElementById('subject-name').value,
+                details: document.getElementById('homework-details').value,
+                due: document.getElementById('due-date').value,
+                status: document.getElementById('homework-status').value
+            };
+
+            const { error } = await db.from('homeworks').insert([newHomework]);
+
+            if (error) {
+                alert('حدث خطأ أثناء حفظ الواجب سحابياً!');
+                console.error(error);
+            } else {
+                alert('تم نشر الواجب سحابياً بنجاح لجميع طلاب الصف المستهدف!');
+                this.reset();
+                fetchHomeworks();
+                switchView('homework', document.querySelector('.nav-links li:nth-child(2) a'));
+            }
+        });
+
+        // حذف واجب من Supabase
+        async function deleteHomework(id) {
+            if (confirm("هل أنت متأكد من حذف هذا الواجب نهائياً من السحابة؟")) {
+                const { error } = await db.from('homeworks').delete().eq('id', id);
+                if (!error) {
+                    fetchHomeworks();
+                } else {
+                    alert('فشل الحذف!');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
