@@ -1,1 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم - مدرسة كوثر الأهلية</title>
+  <style>
+    /* --------------------------------------------------
+       1. التنسيقات العامة
+    -------------------------------------------------- */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9f6;
+      margin: 0;
+      padding: 20px;
+    }
 
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* --------------------------------------------------
+       2. تنسيق شريط الأخبار المتحرك (News Ticker)
+    -------------------------------------------------- */
+    .ticker-container {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      background: #ffffff;
+      padding: 12px 0;
+      border-radius: 12px;
+      border: 1px solid #eef2ed;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      margin-bottom: 24px;
+    }
+
+    .ticker-text {
+      display: inline-block;
+      white-space: nowrap;
+      padding-right: 100%; /* يبدأ من خارج الشاشة */
+      animation: marquee 22s linear infinite;
+      color: #333;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    /* إيقاف الشريط عند التمرير بالماوس */
+    .ticker-container:hover .ticker-text {
+      animation-play-state: paused;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-100%, 0, 0);
+      }
+    }
+
+    /* --------------------------------------------------
+       3. تنسيق البطاقات التفاعلية (Interactive Cards)
+    -------------------------------------------------- */
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid #eef2ed;
+      user-select: none;
+    }
+
+    /* تأثيرات المرور والنقر (Hover & Active) */
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      border-color: #c5d8c3;
+    }
+
+    .stat-card:active {
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      background-color: #eaf2eb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .card-title {
+      color: #555555;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .card-number {
+      color: #111111;
+      font-size: 32px;
+      font-weight: 800;
+      margin: 5px 0 10px 0;
+    }
+
+    .card-desc {
+      color: #888888;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- أولاً: شريط الأخبار -->
+    <div class="ticker-container">
+      <div class="ticker-text">
+        📢 مرحباً بكم في لوحة تحكم مدرسة كوثر الأهلية &nbsp;&nbsp;|&nbsp;&nbsp; 
+        📅 تم فتح باب التسجيل للعام الدراسي الجديد 2026 - 2027 &nbsp;&nbsp;|&nbsp;&nbsp; 
+        📝 تذكير: آخر موعد لتسليم الواجبات اليوم الساعة 8 مساءً
+      </div>
+    </div>
+
+    <!-- ثانياً: البطاقات التفاعلية -->
+    <div class="cards-container">
+      
+      <!-- بطاقة الطلاب -->
+      <div class="stat-card" onclick="navigateTo('/students')">
+        <div class="card-header">
+          <span class="card-title">الطلاب</span>
+          <div class="card-icon">👥</div>
+        </div>
+        <div class="card-number">120</div>
+        <div class="card-desc">مسجلون في المنصة</div>
+      </div>
+
+      <!-- بطاقة المتفوقون -->
+      <div class="stat-card" onclick="navigateTo('/honors')">
+        <div class="card-header">
+          <span class="card-title">المتفوقون</span>
+          <div class="card-icon">⭐</div>
+        </div>
+        <div class="card-number">4</div>
+        <div class="card-desc">لوحة الشرف</div>
+      </div>
+
+      <!-- بطاقة الإعلانات والواجبات -->
+      <div class="stat-card" onclick="navigateTo('/announcements')">
+        <div class="card-header">
+          <span class="card-title">الإعلانات والواجبات</span>
+          <div class="card-icon">📄</div>
+        </div>
+        <div class="card-number">3</div>
+        <div class="card-desc">إعلانات المدرسة النشطة</div>
+      </div>
+
+      <!-- بطاقة العام الدراسي -->
+      <div class="stat-card" onclick="navigateTo('/academic-year')">
+        <div class="card-header">
+          <span class="card-title">العام الدراسي</span>
+          <div class="card-icon">🕒</div>
+        </div>
+        <div class="card-number">2026</div>
+        <div class="card-desc">2026 - 2027</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ثالثاً: سكريبت التنقل التفاعلي -->
+  <script>
+    function navigateTo(path) {
+      console.log("التنقل إلى المسار:", path);
+      // استبدل هذا السطر للتنقل الفعلي حسب نظامك:
+      // window.location.href = path; 
+    }
+  </script>
+
+</body>
+</html>
