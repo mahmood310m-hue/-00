@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدرسة كوثر الأهلية - بوابة الطالب</title>
-    <!-- استيراد خط تجوال الهادئ -->
+    <title>مدرسة كوثر الأهلية - بوابة الطالب والإدارة</title>
+    <!-- استيراد خط تجوال -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,6 +19,7 @@
             --accent-gold: #D4AF37;
             --text-main: #2C3531;
             --text-muted: #707A75;
+            --danger: #d9534f;
             --radius: 16px;
             --shadow: 0 4px 20px rgba(107, 142, 123, 0.08);
             --transition: all 0.3s ease;
@@ -107,8 +108,11 @@
             color: var(--primary-sage);
         }
 
-        .nav-links li a i {
-            font-size: 18px;
+        .admin-btn a {
+            color: var(--walnut) !important;
+            font-weight: 700 !important;
+            background-color: #FDF8F3;
+            border: 1px dashed var(--walnut);
         }
 
         /* Main Content */
@@ -153,7 +157,6 @@
             height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            background-color: var(--sage-light);
         }
 
         /* Views / Sections */
@@ -211,130 +214,15 @@
             color: var(--primary-sage);
         }
 
-        /* Tables & Lists */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
+        /* Forms */
+        .form-group {
+            margin-bottom: 16px;
         }
 
-        th, td {
-            padding: 14px 20px;
-            text-align: right;
-            border-bottom: 1px solid var(--sage-light);
-        }
-
-        th {
-            background-color: var(--sage-light);
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
             color: var(--charcoal);
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        td {
-            font-size: 14px;
-            color: var(--text-main);
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
             font-weight: 500;
         }
-
-        .badge.success {
-            background-color: #E2F0D9;
-            color: #385723;
-        }
-
-        .badge.pending {
-            background-color: #FFF2CC;
-            color: #806000;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            aside {
-                width: 70px;
-                padding: 16px 8px;
-            }
-            .logo-text, .nav-links span {
-                display: none;
-            }
-            main {
-                margin-right: 70px;
-                padding: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- القائمة الجانبية -->
-    <aside>
-        <div>
-            <div class="logo-area">
-                <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                <div class="logo-text">
-                    <h2>مدرسة كوثر</h2>
-                    <span>بوابة الطالب الأهلية</span>
-                </div>
-            </div>
-            <ul class="nav-links">
-                <li class="active"><a href="#" onclick="switchView('dashboard', this)"><i class="fa-solid fa-house"></i><span>الداشبورد</span></a></li>
-                <li><a href="#" onclick="switchView('homework', this)"><i class="fa-solid fa-book-open"></i><span>الواجبات</span></a></li>
-                <li><a href="#" onclick="switchView('schedule', this)"><i class="fa-solid fa-calendar-days"></i><span>جدولي</span></a></li>
-                <li><a href="#" onclick="switchView('grades', this)"><i class="fa-solid fa-chart-line"></i><span>نتائجي</span></a></li>
-                <li><a href="#" onclick="switchView('notifications', this)"><i class="fa-solid fa-bell"></i><span>إشعاراتي</span></a></li>
-                <li><a href="#" onclick="switchView('profile', this)"><i class="fa-solid fa-user"></i><span>الملف الشخصي</span></a></li>
-            </ul>
-        </div>
-        <div style="font-size: 12px; color: var(--text-muted); text-align: center;">
-            &copy; 2026 مدرسة كوثر
-        </div>
-    </aside>
-
-    <!-- المحتوى الرئيسي -->
-    <main>
-        <header>
-            <div class="welcome-msg">
-                <h1 id="greeting-title">مرحباً بك، محمود</h1>
-                <p>نتمنى لك يوم دراسي موفق ومملوء بالنجاح</p>
-            </div>
-            <div class="user-profile-mini">
-                <img src="https://ui-avatars.com/api/?name=Mahmood&background=6B8E7B&color=fff" alt="صورة الطالب">
-                <span style="font-weight: 500; font-size: 14px;">محمود</span>
-            </div>
-        </header>
-
-        <!-- 1. الداشبورد -->
-        <section id="dashboard" class="view-section active">
-            <div class="dashboard-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>الواجبات المعلقة</h3>
-                        <i class="fa-solid fa-book-bookmark"></i>
-                    </div>
-                    <div class="stat-value">3</div>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">مطلوب تسليمها هذا الأسبوع</p>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h3>المعدل التراكمي</h3>
-                        <i class="fa-solid fa-award"></i>
-                    </div>
-                    <div class="stat-value">96.4%</div>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">ممتاز - الأول على الصف</p>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h3>الحصص اليومية</h3>
-                        <i class="fa-solid fa-
