@@ -8,9 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- استيراد مكتبة Supabase للتخزين السحابي -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --bg-color: #F4F6F4;
+            --bg-color: #F8F6F0; /* خلفية أوف وايت هادئة مستوحاة من الصورة */
             --card-bg: #FFFFFF;
             --primary-sage: #6B8E7B;
             --sage-light: #E8F0EC;
@@ -20,7 +22,7 @@
             --text-main: #2C3531;
             --text-muted: #707A75;
             --danger: #d9534f;
-            --radius: 16px;
+            --radius: 18px;
             --shadow: 0 4px 20px rgba(107, 142, 123, 0.08);
             --transition: all 0.3s ease;
         }
@@ -40,7 +42,36 @@
             flex-direction: row;
         }
 
-        /* Sidebar Navigation - متوافق مع الهاتف والشاشات الكبيرة */
+        /* نافذة اختيار المرحلة والشعبة (تظهر أول مرة) */
+        #setup-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 53, 49, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        .setup-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        .setup-box h2 {
+            margin-bottom: 15px;
+            color: var(--charcoal);
+            font-size: 20px;
+        }
+
+        /* Sidebar Navigation */
         aside {
             width: 260px;
             background-color: var(--card-bg);
@@ -102,7 +133,7 @@
             padding: 10px 14px;
             color: var(--text-muted);
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 500;
             font-size: 14px;
             transition: var(--transition);
@@ -113,7 +144,6 @@
             color: var(--primary-sage);
         }
 
-        /* زر الإدارة مثبت أسفل القائمة */
         .admin-section {
             margin-top: auto;
             padding-top: 15px;
@@ -130,7 +160,7 @@
             gap: 12px;
             padding: 12px 14px;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 14px;
         }
 
@@ -138,7 +168,7 @@
         main {
             margin-right: 260px;
             flex-grow: 1;
-            padding: 20px;
+            padding: 25px;
             max-width: 1200px;
             width: calc(100% - 260px);
         }
@@ -151,7 +181,7 @@
         }
 
         .welcome-msg h1 {
-            font-size: 20px;
+            font-size: 22px;
             color: var(--charcoal);
             font-weight: 700;
         }
@@ -167,14 +197,14 @@
             align-items: center;
             gap: 10px;
             background: var(--card-bg);
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 30px;
             box-shadow: var(--shadow);
         }
 
         .user-profile-mini img {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -194,20 +224,20 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Dashboard Grid */
+        /* Dashboard Grid & Pastel Cards */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
             margin-bottom: 25px;
         }
 
         .card {
             background-color: var(--card-bg);
-            padding: 20px;
+            padding: 22px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            border: 1px solid rgba(107, 142, 123, 0.1);
+            border: 1px solid rgba(107, 142, 123, 0.08);
         }
 
         .card-header {
@@ -229,7 +259,7 @@
         }
 
         .stat-value {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             color: var(--primary-sage);
         }
@@ -237,6 +267,7 @@
         /* Forms */
         .form-group {
             margin-bottom: 14px;
+            text-align: right;
         }
 
         .form-group label {
@@ -249,9 +280,9 @@
 
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 10px;
+            padding: 11px;
             border: 1px solid var(--sage-light);
-            border-radius: 8px;
+            border-radius: 10px;
             outline: none;
             font-size: 14px;
             background-color: #FAFBFB;
@@ -261,20 +292,23 @@
             background-color: var(--primary-sage);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
+            transition: var(--transition);
         }
+
+        .btn-submit:hover { opacity: 0.9; }
 
         .btn-delete {
             background-color: var(--danger);
             color: white;
             border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 5px 10px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
         }
@@ -296,7 +330,7 @@
         }
 
         th, td {
-            padding: 12px 16px;
+            padding: 14px 18px;
             text-align: right;
             border-bottom: 1px solid var(--sage-light);
             font-size: 13px;
@@ -309,7 +343,7 @@
         }
 
         .badge {
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 500;
@@ -318,7 +352,7 @@
         .badge.success { background-color: #E2F0D9; color: #385723; }
         .badge.pending { background-color: #FFF2CC; color: #806000; }
 
-        /* تعديلات استجابة الهاتف (Mobile Responsive) */
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
             aside {
                 width: 100%;
@@ -334,9 +368,7 @@
                 border-top: 1px solid var(--sage-light);
                 box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
             }
-            .logo-area, .admin-section {
-                display: none; /* إخفاء الشعار وزر الإدارة الجانبي في الشاشات الصغيرة لتوفير المساحة */
-            }
+            .logo-area, .admin-section { display: none; }
             .nav-links {
                 flex-direction: row;
                 justify-content: space-around;
@@ -349,35 +381,29 @@
                 padding: 6px;
                 font-size: 10px;
             }
-            .nav-links li a i {
-                font-size: 18px;
-            }
+            .nav-links li a i { font-size: 18px; }
             main {
                 margin-right: 0;
-                margin-bottom: 70px;
+                margin-bottom: 75px;
                 width: 100%;
                 padding: 15px;
             }
-            /* زر الإدارة العائم السفلي للهواتف */
-            .mobile-admin-fab {
-                display: flex !important;
-            }
+            .mobile-admin-fab { display: flex !important; }
         }
 
-        /* زر العائم للإدارة في الهاتف */
         .mobile-admin-fab {
             display: none;
             position: fixed;
-            bottom: 75px;
+            bottom: 78px;
             left: 15px;
             background-color: var(--walnut);
             color: white;
-            width: 45px;
-            height: 45px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             z-index: 105;
             cursor: pointer;
             font-size: 18px;
@@ -386,6 +412,32 @@
 </head>
 <body>
 
+    <!-- نافذة اختيار المرحلة والشعبة للطالب عند أول زيارة -->
+    <div id="setup-modal">
+        <div class="setup-box">
+            <h2>اختر مرحلتك وشعبتك الدراسية</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">لتخصيص الواجبات والجداول الخاصة بك بدقة</p>
+            <div class="form-group">
+                <label>المرحلة الدراسية</label>
+                <select id="user-stage-input">
+                    <option value="السادس الإعدادي">السادس الإعدادي</option>
+                    <option value="الخامس الإعدادي">الخامس الإعدادي</option>
+                    <option value="الرابع الإعدادي">الرابع الإعدادي</option>
+                    <option value="الثالث المتوسط">الثالث المتوسط</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>الشعبة</label>
+                <select id="user-section-input">
+                    <option value="أ">شعبة أ</option>
+                    <option value="ب">شعبة ب</option>
+                    <option value="ج">شعبة ج</option>
+                </select>
+            </div>
+            <button class="btn-submit" onclick="saveStudentSetup()">دخول المنصة</button>
+        </div>
+    </div>
+
     <!-- القائمة الجانبية -->
     <aside>
         <div>
@@ -393,26 +445,25 @@
                 <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                 <div class="logo-text">
                     <h2>مدرسة كوثر</h2>
-                    <span>بوابة الطالب</span>
+                    <span>بوابة الطالب الأهلية</span>
                 </div>
             </div>
             <ul class="nav-links">
-                <li class="active"><a href="#" onclick="switchView('dashboard', this)"><i class="fa-solid fa-house"></i><span>الداشبورد</span></a></li>
+                <li class="active"><a href="#" onclick="switchView('dashboard', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a></li>
                 <li><a href="#" onclick="switchView('homework', this)"><i class="fa-solid fa-book-open"></i><span>الواجبات</span></a></li>
                 <li><a href="#" onclick="switchView('schedule', this)"><i class="fa-solid fa-calendar-days"></i><span>جدولي</span></a></li>
                 <li><a href="#" onclick="switchView('grades', this)"><i class="fa-solid fa-chart-line"></i><span>نتائجي</span></a></li>
                 <li><a href="#" onclick="switchView('notifications', this)"><i class="fa-solid fa-bell"></i><span>إشعاراتي</span></a></li>
-                <li><a href="#" onclick="switchView('profile', this)"><i class="fa-solid fa-user"></i><span>الملف</span></a></li>
+                <li><a href="#" onclick="switchView('profile', this)"><i class="fa-solid fa-user"></i><span>حسابي</span></a></li>
             </ul>
         </div>
         
-        <!-- زر الإدارة في الحاسوب (أسفل القائمة) -->
         <div class="admin-section">
             <a href="#" onclick="openAdminPanel(this)"><i class="fa-solid fa-user-gear"></i><span>لوحة الإدارة</span></a>
         </div>
     </aside>
 
-    <!-- زر عائم سريع للإدارة يظهر أسفل الشاشة في الهواتف المحمولة -->
+    <!-- زر عائم للإدارة في الهواتف -->
     <div class="mobile-admin-fab" onclick="openAdminPanel(null)" title="لوحة الإدارة">
         <i class="fa-solid fa-user-gear"></i>
     </div>
@@ -421,16 +472,16 @@
     <main>
         <header>
             <div class="welcome-msg">
-                <h1 id="greeting-title">مرحباً، محمود</h1>
-                <p>نتمنى لك يوم دراسي موفق</p>
+                <h1>الرئيسية</h1>
+                <p id="student-info-subtitle">مرحباً بك، استمتع برحلتك الدراسية اليوم</p>
             </div>
             <div class="user-profile-mini">
                 <img src="https://ui-avatars.com/api/?name=Mahmood&background=6B8E7B&color=fff" alt="صورة الطالب">
-                <span style="font-weight: 500; font-size: 13px;">محمود</span>
+                <span style="font-weight: 500; font-size: 13px;" id="profile-name-label">محمود</span>
             </div>
         </header>
 
-        <!-- 1. الداشبورد -->
+        <!-- 1. الرئيسية / الداشبورد -->
         <section id="dashboard" class="view-section active">
             <div class="dashboard-grid">
                 <div class="card">
@@ -439,7 +490,7 @@
                         <i class="fa-solid fa-book-bookmark"></i>
                     </div>
                     <div class="stat-value" id="homework-count">0</div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">إجمالي الواجبات المسجلة</p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">الواجبات الخاصة بصفك وشعبتك</p>
                 </div>
                 <div class="card">
                     <div class="card-header">
@@ -475,7 +526,7 @@
                         </tr>
                     </thead>
                     <tbody id="homework-table-body">
-                        <!-- تُعبأ بواسطة JavaScript -->
+                        <!-- تملأ برمجياً -->
                     </tbody>
                 </table>
             </div>
@@ -487,41 +538,53 @@
             <div class="card" style="max-width: 600px;">
                 <form id="add-homework-form">
                     <div class="form-group">
+                        <label>المرحلة المستهدفة</label>
+                        <select id="admin-target-stage">
+                            <option value="السادس الإعدادي">السادس الإعدادي</option>
+                            <option value="الخامس الإعدادي">الخامس الإعدادي</option>
+                            <option value="الرابع الإعدادي">الرابع الإعدادي</option>
+                            <option value="الثالث المتوسط">الثالث المتوسط</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الشعبة المستهدفة</label>
+                        <select id="admin-target-section">
+                            <option value="أ">شعبة أ</option>
+                            <option value="ب">شعبة ب</option>
+                            <option value="ج">شعبة ج</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>اسم المادة الدراسية</label>
-                        <input type="text" id="subject-name" placeholder="مثال: الرياضيات، الكيمياء..." required>
+                        <input type="text" id="subject-name" placeholder="مثال: الرياضيات" required>
                     </div>
                     <div class="form-group">
                         <label>تفاصيل الواجب</label>
-                        <textarea id="homework-details" rows="3" placeholder="أدخل تمارين الصفحات أو التعليمات..." required></textarea>
+                        <textarea id="homework-details" rows="3" placeholder="أدخل التمارين والتعليمات..." required></textarea>
                     </div>
                     <div class="form-group">
                         <label>موعد التسليم</label>
                         <input type="text" id="due-date" placeholder="مثال: الأحد القادم" required>
                     </div>
                     <div class="form-group">
-                        <label>حالة الواجب</label>
+                        <label>الحالة</label>
                         <select id="homework-status">
                             <option value="pending">قيد الإنجاز</option>
                             <option value="success">تم التسليم</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn-submit"><i class="fa-solid fa-plus"></i> نشر الواجب الآن</button>
+                    <button type="submit" class="btn-submit"><i class="fa-solid fa-plus"></i> نشر الواجب سحابياً</button>
                 </form>
             </div>
         </section>
 
-        <!-- الأقسام المتبقية -->
+        <!-- أقسام أخرى -->
         <section id="schedule" class="view-section">
             <h2 style="margin-bottom: 16px; font-size: 16px; color: var(--charcoal);">جدول الحصص الأسبوعي</h2>
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr><th>اليوم</th><th>الحصة الأولى</th><th>الحصة الثانية</th><th>الحصة الثالثة</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>الأحد</td><td>رياضيات</td><td>فيزياء</td><td>لغة عربية</td></tr>
-                        <tr><td>الإثنين</td><td>لغة إنجليزية</td><td>حاسوب</td><td>تربية إسلامية</td></tr>
-                    </tbody>
+                    <thead><tr><th>اليوم</th><th>الحصة الأولى</th><th>الحصة الثانية</th><th>الحصة الثالثة</th></tr></thead>
+                    <tbody><tr><td>الأحد</td><td>رياضيات</td><td>فيزياء</td><td>لغة عربية</td></tr></tbody>
                 </table>
             </div>
         </section>
@@ -530,132 +593,76 @@
             <h2 style="margin-bottom: 16px; font-size: 16px; color: var(--charcoal);">سجل النتائج والاختبارات</h2>
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr><th>المادة الدراسية</th><th>الشهر الأول</th><th>الشهر الثاني</th><th>الدرجة النهائية</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>الرياضيات</td><td>19 / 20</td><td>20 / 20</td><td><span class="badge success">ممتاز (97.5%)</span></td></tr>
-                    </tbody>
+                    <thead><tr><th>المادة الدراسية</th><th>الشهر الأول</th><th>الشهر الثاني</th><th>الدرجة النهائية</th></tr></thead>
+                    <tbody><tr><td>الرياضيات</td><td>19 / 20</td><td>20 / 20</td><td><span class="badge success">ممتاز (97.5%)</span></td></tr></tbody>
                 </table>
             </div>
         </section>
 
         <section id="notifications" class="view-section">
-            <h2 style="margin-bottom: 16px; font-size: 16px; color: var(--charcoal);">لوحة الإشعارات والتنبيهات</h2>
+            <h2 style="margin-bottom: 16px; font-size: 16px; color: var(--charcoal);">الإشعارات والتنبيهات</h2>
             <div class="card" style="padding: 16px;">
                 <h4 style="font-size: 14px; color: var(--charcoal);">موعد اجتماع أولياء الأمور</h4>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">سيتم عقد الاجتماع يوم السبت القادم عبر منصة المدرسة.</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">السبت القادم عبر منصة المدرسة.</p>
             </div>
         </section>
 
         <section id="profile" class="view-section">
-            <h2 style="margin-bottom: 16px; font-size: 16px; color: var(--charcoal);">الملف الشخصي للطالب</h2>
+            <h2 style="margin-bottom: 16px; font-size: 16px; color: var(--charcoal);">الملف الشخصي</h2>
             <div class="card" style="max-width: 500px;">
                 <h3>محمود</h3>
-                <p style="color: var(--text-muted); font-size: 13px;">الصف: السادس الاعدادي (فرع التطبيقي)</p>
+                <p id="profile-stage-details" style="color: var(--text-muted); font-size: 13px; margin-top: 5px;"></p>
             </div>
         </section>
     </main>
 
     <script>
+        // إعدادات قاعدة بيانات Supabase (استبدل القيم أدناه بمعلومات مشروعك الخاصة)
+        const SUPABASE_URL = 'https://YOUR-PROJECT-ID.supabase.co';
+        const SUPABASE_KEY = 'YOUR-ANON-KEY';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         const ADMIN_PIN = "55443322mm";
         let isAdminLoggedIn = false;
 
-        const defaultHomework = [
-            { id: 1, subject: "الرياضيات", details: "حل تمارين صفحة 45 (المصفوفات)", due: "الخميس القادم", status: "pending" },
-            { id: 2, subject: "اللغة العربية", details: "كتابة تعبير عن العلم وأثره", due: "الأربعاء", status: "success" }
-        ];
+        let studentStage = localStorage.getItem('kawthar_stage');
+        let studentSection = localStorage.getItem('kawthar_section');
 
-        function getHomeworkData() {
-            const data = localStorage.getItem('kawthar_homework');
-            return data ? JSON.parse(data) : defaultHomework;
-        }
-
-        function saveHomeworkData(data) {
-            localStorage.setItem('kawthar_homework', JSON.stringify(data));
-            renderHomework();
-        }
-
-        function renderHomework() {
-            const list = getHomeworkData();
-            const tbody = document.getElementById('homework-table-body');
-            document.getElementById('homework-count').innerText = list.length;
-            
-            tbody.innerHTML = '';
-            list.forEach(item => {
-                const tr = document.createElement('tr');
-                const badgeClass = item.status === 'success' ? 'success' : 'pending';
-                const badgeText = item.status === 'success' ? 'تم التسليم' : 'قيد الإنجاز';
-
-                tr.innerHTML = `
-                    <td>${item.subject}</td>
-                    <td>${item.details}</td>
-                    <td>${item.due}</td>
-                    <td><span class="badge ${badgeClass}">${badgeText}</span></td>
-                    ${isAdminLoggedIn ? `<td><button class="btn-delete" onclick="deleteHomework(${item.id})"><i class="fa-solid fa-trash"></i></button></td>` : ''}
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function switchView(viewId, element) {
-            document.querySelectorAll('.view-section').forEach(section => section.classList.remove('active'));
-            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-
-            document.getElementById(viewId).classList.add('active');
-            if (element) element.parentElement.classList.add('active');
-        }
-
-        function openAdminPanel(element) {
-            if (!isAdminLoggedIn) {
-                const pin = prompt("أدخل الرمز السري للدخول إلى لوحة الإدارة:");
-                if (pin === ADMIN_PIN) {
-                    isAdminLoggedIn = true;
-                    alert("تم تسجيل الدخول بنجاح كمدير!");
-                    document.querySelectorAll('.admin-only-col').forEach(el => el.style.display = 'table-cell');
-                    renderHomework();
-                    switchView('admin-panel', element);
-                } else if (pin !== null) {
-                    alert("الرمز السري غير صحيح!");
-                }
-            } else {
-                switchView('admin-panel', element);
+        // التحقق من اختيار المرحلة والشعبة عند فتح التطبيق لأول مرة
+        window.addEventListener('DOMContentLoaded', () => {
+            if (studentStage && studentSection) {
+                document.getElementById('setup-modal').style.display = 'none';
+                updateStudentUI();
+                fetchHomeworks();
             }
-        }
-
-        document.getElementById('add-homework-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const subject = document.getElementById('subject-name').value;
-            const details = document.getElementById('homework-details').value;
-            const due = document.getElementById('due-date').value;
-            const status = document.getElementById('homework-status5' in this ? 'pending' : document.getElementById('homework-status').value);
-
-            const currentData = getHomeworkData();
-            const newItem = {
-                id: Date.now(),
-                subject,
-                details,
-                due,
-                status: document.getElementById('homework-status').value
-            };
-
-            currentData.unshift(newItem);
-            saveHomeworkData(currentData);
-
-            this.reset();
-            alert("تم نشر الواجب الجديد بنجاح!");
-            switchView('homework', document.querySelector('.nav-links li:nth-child(2) a'));
         });
 
-        function deleteHomework(id) {
-            if (confirm("هل أنت متأكد من حذف هذا الواجب؟")) {
-                const currentData = getHomeworkData();
-                const filteredData = currentData.filter(item => item.id !== id);
-                saveHomeworkData(filteredData);
-            }
+        function saveStudentSetup() {
+            const stage = document.getElementById('user-stage-input').value;
+            const section = document.getElementById('user-section-input').value;
+            
+            localStorage.setItem('kawthar_stage', stage);
+            localStorage.setItem('kawthar_section', section);
+            
+            studentStage = stage;
+            studentSection = section;
+
+            document.getElementById('setup-modal').style.display = 'none';
+            updateStudentUI();
+            fetchHomeworks();
         }
 
-        renderHomework();
-    </script>
-</body>
-</html>
+        function updateStudentUI() {
+            document.getElementById('student-info-subtitle').innerText = `المرحلة: ${studentStage} - شعبة ${studentSection}`;
+            document.getElementById('profile-stage-details').innerText = `المرحلة الدراسية: ${studentStage} (شعبة ${studentSection})`;
+        }
+
+        // جلب الواجبات من Supabase مفرزة حسب المرحلة والشعبة
+        async function fetchHomeworks() {
+            if (!studentStage || !studentSection) return;
+
+            const { data, error } = await db
+                .from('homeworks')
+                .select('*')
+                .eq('stage', studentStage)
+                .eq('section
