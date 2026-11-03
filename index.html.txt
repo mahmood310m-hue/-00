@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدرسة كوثر الأهلية</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e293b">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-slate-100 min-h-screen pb-20 font-sans">
+
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginPage" class="flex flex-col items-center justify-center min-h-screen px-6">
+        <div class="w-full max-w-sm bg-cardbg p-6 rounded-2xl border border-slate-700/60 shadow-xl text-center">
+            <!-- أيقونة التطبيق -->
+            <div class="w-20 h-20 mx-auto mb-4 bg-brand-900/50 rounded-2xl flex items-center justify-center border border-brand-500/30">
+                <svg class="w-12 h-12 text-brand-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 3L2 12h3v8h14v-8h3L12 3z"/>
+                    <path d="M12 7v5"/>
+                    <path d="M9 10l3-3 3 3"/>
+                </svg>
+            </div>
+            <h1 class="text-xl font-bold text-slate-100 mb-1">مدرسة كوثر الأهلية</h1>
+            <p class="text-xs text-slate-400 mb-6">منصة التواصل والخدمات الإلكترونية</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4 text-right">
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1">رقم الهاتف</label>
+                    <input type="tel" id="phoneInput" required placeholder="0770 000 0000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500 text-left dir-ltr">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1">كلمة المرور</label>
+                    <input type="password" id="passInput" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2.5 rounded-xl transition text-sm shadow-lg shadow-brand-600/20">
+                    تسجيل الدخول
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- واجهة التطبيق الرئيسية -->
+    <div id="appPage" class="hidden">
+        <!-- الهيدر العلوي -->
+        <header class="bg-cardbg border-b border-slate-800 p-4 sticky top-0 z-40 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-brand-900/60 rounded-xl flex items-center justify-center border border-brand-500/30">
+                    <svg class="w-6 h-6 text-brand-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 3L2 12h3v8h14v-8h3L12 3z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-sm">مدرسة كوثر الأهلية</h2>
+                    <p class="text-xs text-slate-400" id="userPhoneDisplay">أهلاً بك</p>
+                </div>
+            </div>
+            <button onclick="handleLogout()" class="text-slate-400 hover:text-rose-400 text-xs flex items-center gap-1 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
+                خروج
+            </button>
+        </header>
+
+        <!-- الشريط المتحرك من اليسار إلى اليمين -->
+        <div class="bg-brand-900/40 border-y border-brand-500/20 py-2 overflow-hidden">
+            <div class="animate-marquee text-xs text-brand-100 flex gap-8">
+                <span>🔔 بدء التسجيل للسنة الدراسية الجديدة</span>
+                <span>📅 امتحانات الشهر الأول تبدأ الأحد القادم</span>
+                <span>🏆 تكريم الطلاب المتفوقين يوم الخميس</span>
+            </div>
+        </div>
+
+        <!-- الأقسام الرئيسية والفرعية (بطاقات) -->
+        <main class="p-4 space-y-6 max-w-md mx-auto">
+            <!-- بطاقة النتائج -->
+            <section class="bg-cardbg p-4 rounded-2xl border border-slate-800">
+                <h3 class="font-semibold text-sm mb-3 text-brand-500 flex items-center gap-2">
+                    🎓 نتائج الامتحانات
+                </h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/80 text-center">
+                        <p class="text-xs text-slate-400">الشهر الأول</p>
+                        <p class="text-lg font-bold text-emerald-400 mt-1">95%</p>
+                    </div>
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/80 text-center">
+                        <p class="text-xs text-slate-400">الشهر الثاني</p>
+                        <p class="text-lg font-bold text-brand-500 mt-1">92%</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- بطاقة الجدول الدراسي -->
+            <section class="bg-cardbg p-4 rounded-2xl border border-slate-800">
+                <h3 class="font-semibold text-sm mb-3 text-brand-500">📅 جدول الحصص اليومي</h3>
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between p-2.5 bg-slate-900/60 rounded-xl">
+                        <span>الحصة الأولى: رياضيات</span>
+                        <span class="text-slate-400">08:00 ص</span>
+                    </div>
+                    <div class="flex justify-between p-2.5 bg-slate-900/60 rounded-xl">
+                        <span>الحصة الثانية: علوم</span>
+                        <span class="text-slate-400">09:00 ص</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const phone = document.getElementById('phoneInput').value;
+            document.getElementById('userPhoneDisplay').innerText = phone;
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('appPage').classList.remove('hidden');
+        }
+
+        function handleLogout() {
+            document.getElementById('appPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
