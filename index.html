@@ -38,7 +38,7 @@
             padding-bottom: 40px;
         }
 
-        /* 1. Header العلوي المطابق للصورة */
+        /* 1. Header العلوي */
         header.top-header {
             background: var(--card-bg);
             padding: 15px 20px;
@@ -81,6 +81,7 @@
             font-size: 13px;
             text-decoration: none;
             transition: 0.2s;
+            cursor: pointer;
         }
 
         .nav-item.active {
@@ -106,7 +107,6 @@
             animation: ticker 22s linear infinite;
         }
 
-        /* التحريك من اليسار إلى اليمين LTR */
         @keyframes ticker {
             0% { transform: translate3d(-100%, 0, 0); }
             100% { transform: translate3d(0, 0, 0); }
@@ -124,14 +124,13 @@
             color: #A3D9C9;
         }
 
-        /* 4. الحاوية الرئيسية والمكتبيات */
+        /* 4. الحاوية الرئيسية */
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px 15px;
         }
 
-        /* Breadcrumb المسار */
         .breadcrumb-bar {
             display: flex;
             justify-content: space-between;
@@ -149,13 +148,12 @@
             font-weight: 600;
         }
 
-        /* 5. كرت الترحيب الكبير */
+        /* 5. كرت الترحيب */
         .welcome-card {
             background: var(--mint-bg);
             border-radius: var(--radius-lg);
             padding: 25px 20px;
             text-align: center;
-            position: relative;
             margin-bottom: 20px;
             border: 1px solid rgba(63, 94, 77, 0.08);
         }
@@ -184,7 +182,7 @@
             line-height: 1.6;
         }
 
-        /* 6. شبكة الإحصائيات (Grid 2x2) */
+        /* 6. شبكة الإحصائيات والخانات المفعلة */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -242,7 +240,6 @@
             color: var(--text-muted);
         }
 
-        /* 7. قسم الأخبار والإعلانات والواجبات */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -289,7 +286,6 @@
             color: var(--text-muted);
         }
 
-        /* الجداول والنوافذ */
         .view-section { display: none; }
         .view-section.active { display: block; }
 
@@ -323,13 +319,12 @@
             margin-top: 10px;
         }
 
-        .form-group { margin-bottom: 12px; }
+        .form-group { margin-bottom: 12px; text-align: right; }
         .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: var(--radius-md); outline: none;
         }
 
-        /* نافذة الاختيار لأول مرة */
         #setup-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; z-index: 1000;
@@ -339,7 +334,6 @@
             background: var(--card-bg); padding: 25px; border-radius: var(--radius-lg); width: 90%; max-width: 380px; text-align: center;
         }
 
-        /* زر الإدارة العائم */
         .admin-fab {
             position: fixed; bottom: 20px; left: 20px; background: var(--primary-green); color: white;
             width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -375,19 +369,19 @@
         </div>
     </div>
 
-    <!-- 1. الهيدر العلوي المطابق للصورة -->
+    <!-- 1. الهيدر العلوي -->
     <header class="top-header">
         <div class="header-title">مدرسة كوثر الأهلية المختلطة</div>
         <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;" id="profile-name">محمود</div>
     </header>
 
-    <!-- 2. قائمة التنقل الأفقية مثل التصميم في الصورة -->
+    <!-- 2. قائمة التنقل الأفقية -->
     <nav class="top-nav">
-        <a href="#" class="nav-item active" onclick="switchView('dashboard', this)"><i class="fa-solid fa-house"></i> الرئيسية</a>
-        <a href="#" class="nav-item" onclick="switchView('homework', this)"><i class="fa-solid fa-book-open"></i> الواجبات</a>
-        <a href="#" class="nav-item" onclick="switchView('honors', this)"><i class="fa-solid fa-star"></i> المتفوقون</a>
-        <a href="#" class="nav-item" onclick="switchView('grades', this)"><i class="fa-solid fa-list-check"></i> الدرجات</a>
-        <a href="#" class="nav-item" onclick="switchView('attendance', this)"><i class="fa-solid fa-user-check"></i> الحضور</a>
+        <a class="nav-item active" onclick="switchView('dashboard', this)"><i class="fa-solid fa-house"></i> الرئيسية</a>
+        <a class="nav-item" onclick="switchView('homework', this)"><i class="fa-solid fa-book-open"></i> الواجبات</a>
+        <a class="nav-item" onclick="switchView('honors', this)"><i class="fa-solid fa-star"></i> المتفوقون</a>
+        <a class="nav-item" onclick="switchView('grades', this)"><i class="fa-solid fa-list-check"></i> الدرجات</a>
+        <a class="nav-item" onclick="switchView('attendance', this)"><i class="fa-solid fa-user-check"></i> الحضور</a>
     </nav>
 
     <!-- 3. الشريط الإخباري المتحرك من اليسار إلى اليمين -->
@@ -402,22 +396,20 @@
     <!-- المحتوى الرئيسي -->
     <div class="container">
 
-        <!-- 1. واجهة الرئيسية -->
+        <!-- واجهة الرئيسية -->
         <section id="dashboard" class="view-section active">
-            <!-- Breadcrumb -->
             <div class="breadcrumb-bar">
                 <div>مدرسة كوثر / <span style="color: var(--text-dark); font-weight: 700;">الرئيسية</span></div>
                 <div class="bc-tag">العام الدراسي 2026 - 2027</div>
             </div>
 
-            <!-- كرت الترحيب -->
             <div class="welcome-card">
                 <span class="welcome-tag">مدرستنا ▪ بيت العلم والإبداع</span>
                 <h2>مرحباً بكم في مدرسة كوثر</h2>
                 <p>بيئة تعليمية آمنة ومحفزة، نؤمن أن لكل طالب موهبة تستحق الرعاية.</p>
             </div>
 
-            <!-- كروت الإحصائيات (مثل الصورة) -->
+            <!-- شبكة الخانات المفعلة سحابياً -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-header">
@@ -425,9 +417,9 @@
                         <div class="stat-icon"><i class="fa-solid fa-user-group"></i></div>
                     </div>
                     <div class="stat-body">
-                        <div class="stat-number">—</div>
+                        <div class="stat-number" id="stat-students">--</div>
                     </div>
-                    <div class="stat-footer">يضاف العدد من الإدارة</div>
+                    <div class="stat-footer">مسجلون في المنصة</div>
                 </div>
 
                 <div class="stat-card">
@@ -436,20 +428,20 @@
                         <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
                     </div>
                     <div class="stat-body">
-                        <div class="stat-number">4</div>
+                        <div class="stat-number" id="stat-honors">--</div>
                     </div>
-                    <div class="stat-footer">نماذج من لوحة الشرف</div>
+                    <div class="stat-footer">لوحة الشرف</div>
                 </div>
 
                 <div class="stat-card">
                     <div class="stat-header">
-                        <span>الإعلانات</span>
+                        <span>الإعلانات والواجبات</span>
                         <div class="stat-icon"><i class="fa-solid fa-file-lines"></i></div>
                     </div>
                     <div class="stat-body">
-                        <div class="stat-number" id="homework-count">3</div>
+                        <div class="stat-number" id="stat-announcements">--</div>
                     </div>
-                    <div class="stat-footer">إعلانات المدرسة والواجبات</div>
+                    <div class="stat-footer">إعلانات المدرسة النشطة</div>
                 </div>
 
                 <div class="stat-card">
@@ -464,7 +456,6 @@
                 </div>
             </div>
 
-            <!-- قسم الأخبار والإعلانات -->
             <div class="section-header">
                 <h3>أخبار وإعلانات المدرسة</h3>
                 <span>آخر المستجدات والنشاطات</span>
@@ -477,7 +468,7 @@
             </div>
         </section>
 
-        <!-- 2. واجهة الواجبات المدرسية (مربوطة بالسحابة) -->
+        <!-- واجهة الواجبات -->
         <section id="homework" class="view-section">
             <div class="section-header">
                 <h3>جدول الواجبات المدرسية</h3>
@@ -493,12 +484,12 @@
                     </tr>
                 </thead>
                 <tbody id="homework-table-body">
-                    <!-- تملأ برمجياً من Supabase -->
+                    <!-- تملأ برمجياً -->
                 </tbody>
             </table>
         </section>
 
-        <!-- 3. لوحة تحكم الإدارة -->
+        <!-- لوحة تحكم الإدارة -->
         <section id="admin-panel" class="view-section">
             <div class="news-card">
                 <h3 style="color: var(--primary-green); margin-bottom: 12px;">نشر واجب جديد (خاص بالإدارة)</h3>
@@ -537,20 +528,17 @@
             </div>
         </section>
 
-        <!-- أقسام أخرى -->
-        <section id="honors" class="view-section"><div class="news-card"><h3>لوحة الشرف والمتفوقين</h3><p class="news-sub">سيتم إدراج أسماء المتفوقين قريباً.</p></div></section>
-        <section id="grades" class="view-section"><div class="news-card"><h3>سجل الدرجات</h3><p class="news-sub">سجل درجات الاختبارات والشهادات.</p></div></section>
-        <section id="attendance" class="view-section"><div class="news-card"><h3>سجل الحضور والغياب</h3><p class="news-sub">متابعة الحضور اليومي للطالب.</p></div></section>
+        <section id="honors" class="view-section"><div class="news-card"><h3>لوحة الشرف والمتفوقين</h3><p class="news-sub">قريباً يتم نشر أسماء المتفوقين.</p></div></section>
+        <section id="grades" class="view-section"><div class="news-card"><h3>سجل الدرجات</h3><p class="news-sub">سجل درجات الاختبارات.</p></div></section>
+        <section id="attendance" class="view-section"><div class="news-card"><h3>سجل الحضور والغياب</h3><p class="news-sub">متابعة الحضور اليومي.</p></div></section>
 
     </div>
 
-    <!-- زر لوحة الإدارة العائم -->
     <div class="admin-fab" onclick="openAdminPanel()" title="لوحة الإدارة">
         <i class="fa-solid fa-user-gear"></i>
     </div>
 
     <script>
-        // الربط السحابي بـ Supabase
         const SUPABASE_URL = 'https://snpmuvcgsgpbsyutcqkm.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNucG11dmNnc2dwYnN5dXRjcWttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM3MjA1MzMsImV4cCI6MjEwOTI5NjUzM30.U3gDu6sihIzUFB5x-42PzMdDEa8Vr3FkmvYRBZmEMOI';
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -567,6 +555,7 @@
                 updateStudentUI();
                 fetchHomeworks();
             }
+            fetchStats();
         });
 
         function saveStudentSetup() {
@@ -583,6 +572,22 @@
 
         function updateStudentUI() {
             document.getElementById('student-class-label').innerText = `${studentStage} - شعبة ${studentSection}`;
+        }
+
+        // جلب قيم الخانات والإحصائيات من Supabase
+        async function fetchStats() {
+            const { data, error } = await db.from('school_stats').select('*');
+            if (!error && data) {
+                data.forEach(item => {
+                    if (item.stat_key === 'students') {
+                        document.getElementById('stat-students').innerText = item.stat_value;
+                    } else if (item.stat_key === 'honors') {
+                        document.getElementById('stat-honors').innerText = item.stat_value;
+                    } else if (item.stat_key === 'announcements') {
+                        document.getElementById('stat-announcements').innerText = item.stat_value;
+                    }
+                });
+            }
         }
 
         async function fetchHomeworks() {
@@ -602,7 +607,6 @@
 
         function renderHomeworkTable(list) {
             const tbody = document.getElementById('homework-table-body');
-            document.getElementById('homework-count').innerText = list.length;
             tbody.innerHTML = '';
 
             if (list.length === 0) {
